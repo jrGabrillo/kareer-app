@@ -19,12 +19,12 @@ Framework7.prototype.plugins.main = function (app, params) {
     });
 
     var init = function(){
-        logIn();
-        signUp.initial();
+        // logIn();
+        // signUp.initial();
         // signUp.persnal();
         // signUp.academic();
         // signUp.career();     
-        // jobs.show();
+        jobs.show();
     }
 
     // System functions - general usage
