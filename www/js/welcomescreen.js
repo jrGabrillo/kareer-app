@@ -85,7 +85,8 @@ Framework7.prototype.plugins.welcomescreen = function (app, globalPluginParams) 
             '{{#if options.closeButton}}' +
             '<div class="welcomescreen-closebtn close-welcomescreen">{{options.closeButtonText}}</div>' +
             '{{/if}}' +
-            '<div class="welcomescreen-swiper" style="background: linear-gradient(rgba(255,255,255,0.1),rgba(255,255,255,1));">' +
+            // '<div class="welcomescreen-swiper" style="background: linear-gradient(rgba(255,255,255,0.1),rgba(255,255,255,1));">' +
+            '<div class="welcomescreen-swiper" style="background: transparent;">' +
             '<div class="swiper-wrapper">' +
             '{{#each slides}}' +
             '<div class="swiper-slide" {{#if id}}id="{{id}}"{{/if}}>' +
@@ -103,7 +104,7 @@ Framework7.prototype.plugins.welcomescreen = function (app, globalPluginParams) 
             '{{/each}}' +
             '</div>' +
             '{{#if options.pagination}}' +
-            '<div class="welcomescreen-pagination swiper-pagination"></div>' +
+            '<div class="welcomescreen-pagination swiper-pagination hidden"></div>' +
             '{{/if}}' +
             '</div>' +
             '</div>';

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <title>Kareer</title>
+        <link rel="stylesheet" href="css/framework7.material.min.css">
+        <link rel="stylesheet" href="css/framework7.material.colors.min.css">
+        <link rel="stylesheet" href="css/framework7.3dpanels.min.css">
+        <link rel="stylesheet" href="css/my-app.css">
+        <link rel="stylesheet" href="css/animate.css">
+        <link rel="stylesheet" href="css/framework7-icons.css">
+        <link rel="stylesheet" href="css/welcomescreen.css">
+        <link rel="stylesheet" href="css/original.materialize.min.css">
+        <link rel="stylesheet" href="fonts/Framework7Icons-Regular.woff2">
+    </head>
+    <body style="background-image: url(img/bg.png); max-height: 100%;">
+        <div class="views">
+            <div class="view view-main" id="jobs">
+                <div class="pages toolbar-fixed">
+                    <div class="page" data-page='index' style="background-image: url(img/kareer_bg.png);">
+                        <div class="page-content">
+                            <div class="button-row" id="splashScreen">
+                                <img id='displayLogo' src="img/kareer_logo.png" class="animated fadeInUp" style="position:relative; top:0px;">
+                            </div>
+                        </div>
+                        <div class="toolbar" style="background: transparent; height: 100px;">
+                            <div class="toolbar-inner">
+                                <div class="list-block" style="width: 100%;">
+                                    <ul>
+                                        <li style="text-align: center;">
+                                            <a href="#" data-popup=".popup-login" class="open-popup list-button item-link bg-cyan ripple" style='opacity: 0.8;'>Log in</a>
+                                        </li>
+                                        <li style="text-align: center;">
+                                            <a href="#"  data-popup=".popup-sign-up" class="open-popup list-button item-link bg-deeppurple ripple" style='opacity: 0.8;'>Sign In</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>                         
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="popup popup-login">
+            <div class="page-content login-screen-content" style="background: transparent;">
+                <div class="login-screen-title color-white">
+                    Log In 
+                    <a class="close-popup"><i class="icon f7-icons color-white" style="width: 25px; position: absolute;right: 5%;">close_round</i></a>
+                </div>
+                <div class="content-block">
+                    <form action="" method="POST" id='form_logIn' autocomplete="off">
+                        <div class="list-block">
+                            <ul>
+                                <li style="margin-bottom: 10px;">
+                                    <div class="input-field">
+                                        <input type='email' id="field_email" name="field_email" class="form-control color-white">
+                                        <label class="white-text" for="field_email">Email</label>
+                                    </div>
+                                </li>
+                                <li style="margin-bottom: 10px;">
+                                    <div class="input-field">
+                                        <input type='password' id="field_password" name="field_password" class="form-control color-white">
+                                        <label class="white-text" for="field_password">Password</label>
+                                    </div>
+                                </li>
+                                <li style="margin-bottom: 10px;">
+                                    <button class="btn" data-cmd='button_logIn' style="width: 100%;">Login</button>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="list-block">
+                            <div class="list-block-label">
+                                <div class="col-50" style='background: transparent; color: #fff; line-height: 2;'>
+                                    Forget password?
+                                </div>
+                                <div class="row" style='margin-top:50px;'>
+                                    <div class="col-100" style='background: transparent;'>
+                                        <span class="hr color-white"> or Sign up using </span>
+                                    </div>
+                                    <div class="col-100" style='background: transparent;'>
+                                        <img src="img/fb.png" width="30px" />
+                                        <img src="img/gp.png" width="30px" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="popup popup-sign-up">
+            <div class="page-content login-screen-content infinite-scroll" style="background: transparent;">
+                <div class="login-screen-title close-popup" style="color: white">Sign Up<i class="icon f7-icons" style="width: 25px; position: absolute;right: 5%;">close_round</i></div>
+                <div class="content-block">
+                    <form action="" method="POST" id='form_signUp'>
+                        <div class="list-block">
+                            <ul>
+                                <li>
+                                    <div class="input-field">
+                                        <input type='text' id="field_firstname" name="field_firstname" class="form-control white-text" value="Rufo">
+                                        <label class="white-text" for="field_firstname">First Name</label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="input-field">
+                                        <input type='text' id="field_lastname" name="field_lastname" class="form-control white-text" value="Gabrillo">
+                                        <label class="white-text" for="field_lastname">Last Name</label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="input-field">
+                                        <input type='email' id="field_email" name="field_email" class="form-control white-text" value="rufo.gabrillo@gmail.com">
+                                        <label class="white-text" for="field_email">Email</label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="input-field">
+                                        <input type='password' id="field_password" name="field_password" class="form-control white-text" value="Password7836!">
+                                        <label class="white-text" for="field_password">Password</label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <button class="btn" style="width:100%;">Sign Up</button>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="list-block">`
+                            <div class="list-block-label">
+                                <div class="row" style='margin-top:50px;'>
+                                    <div class="col-100" style='background: transparent;'>
+                                        <span class="hr color-white"> or Sign up using </span>
+                                    </div>
+                                    <div class="col-100" style='background: transparent;'>
+                                        <img src="img/fb.png" width="30px" />
+                                        <img src="img/gp.png" width="30px" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script src="js/framework7.min.js "></script>
+    <script src="js/framework7.3dpanels.min.js"></script>
+    <script src="js/jquery.js "></script>
+    <script src="js/materialize.min.js"></script>
+    <script src="js/welcomescreen.js "></script>
+    <script src="js/my-app.js "></script>
+    <script src="js/validation/jquery.validate.min.js "></script>
+    <script src="js/validation/additional-methods.min.js "></script>
+    <script src="js/mobile.js "></script>
+    <script type="text/javascript">
+        // $(document).ready(function(){
+        //     $$("input").val("");
+        // });
+        $$('.popup-sign-up, .popup-login').on('popup:open',function(){
+            $$("#displayLogo").attr({"style":"position:relative; top:-200px;"});
+        }).on('popup:close',function(){
+            $$("#displayLogo").attr({"style":"position:relative; top:0px;"});
+        });
+    </script>
+</html>
