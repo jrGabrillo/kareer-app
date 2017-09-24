@@ -1,5 +1,5 @@
 // do not delete
-console.log('%cDeveloped By: Rufo N. Gabrillo Jr. (2016)', 'background:#000;color:#ccc;');
+console.log('%cDeveloped By: RNR Digital Consultancy (2017)', 'background:#000;color:#ccc;');
 
 Framework7.prototype.plugins.kareer = function (app, params) {
     'use strict';
@@ -16,7 +16,7 @@ Framework7.prototype.plugins.kareer = function (app, params) {
         	// console.log(deviceSize);
         	// logIn.ini();
         	// signUp.ini();
-        	content.controller();
+        	content.ini();
     	},
         notification:function(title,message,button,timeout,loader,_functionOpen,_functionClose){
             var timeout = (timeout == "")?false:timeout;
@@ -105,25 +105,28 @@ Framework7.prototype.plugins.kareer = function (app, params) {
     };
 
 	var content = {
-		controller:function(){
-			$$(".navbar").removeClass("hidden");
-			$$("a.link").on('click',function(){
-				$("a.link").removeClass("color-teal").addClass("color-gray");
-				$$(this).removeClass('color-gray').addClass("color-teal");
-			});
-
-			view.router.loadPage({url:'pages/admin/jobs.html', animatePages:true});
-			
-			// var pageContent = system.ajax('pages/admin/index.html','');
-			// $$('div[data-node="page-initialization"]').html(pageContent.responseText);
-			// content.inner('account.html');
-
-			app.onPageInit('jobs', function (page) {
-		        jobs.show();
-		        console.log("xxx");
-			});
-
+		ini:function(){
+			view.router.loadPage("pages/admin/jobs.html");
+			app.onPageInit('features', function (page) {
+				content.controller();
+				jobs.show();
+			})
+			// content.pageContent('index.html');
 		},
+		controller:function(){
+			$$("a").on('click',function(){
+				console.log("a");
+				$("a").removeClass('color-teal').addClass('color-gray');
+				$(this).removeClass('color-gray').addClass('color-teal')
+				// content.pageContent(page+'.html');
+			})
+		},
+		pageContent:function(url){
+			var pageContent = system.ajax('pages/admin/'+url,'');
+			pageContent.done(function(data){
+				$$('body .views .view').html(data);
+			})
+		}
 	}
 
     var logIn = {
@@ -490,8 +493,8 @@ Framework7.prototype.plugins.kareer = function (app, params) {
                     "company":"RNR Digital Consultancy",
                     "address":"Lingayen Pangasinan",
                     "job":"App Developer",
-                    "description":"We are looking for hard working individuals who would like to be part of our fast growing team!! &nbsp;&nbsp;</strong><strong>Immediate hiring!&nbsp;",
-                    "detail":"We are looking for hard working individuals who would like to be part of our fast growing team!! &nbsp;&nbsp;</strong><strong>Immediate hiring!&nbsp; We are looking for hard working individuals who would like to be part of our fast growing team!! &nbsp;&nbsp;</strong><strong>Immediate hiring!&nbsp;We are looking for hard working individuals who would like to be part of our fast growing team!! &nbsp;&nbsp;</strong><strong>Immediate hiring!&nbsp;"
+                    "description":"We are looking for hard working individuals who would like to be part of our fast growing team!! &nbsp;&nbsp;Immediate hiring!&nbsp;",
+                    "detail":"We are looking for hard working individuals who would like to be part of our fast growing team!! &nbsp;&nbsp;Immediate hiring!&nbsp; We are looking for hard working individuals who would like to be part of our fast growing team!! &nbsp;&nbsp;</strong><strong>Immediate hiring!&nbsp;We are looking for hard working individuals who would like to be part of our fast growing team!! &nbsp;&nbsp;</strong><strong>Immediate hiring!&nbsp;"
                 },
                 {
                     "company":"Business Profiles, Inc",
@@ -524,59 +527,68 @@ Framework7.prototype.plugins.kareer = function (app, params) {
             ];
 
             var content = "";
+            var height = $(window).height();
+            console.log(height);
             $.each(jobs,function(i,v){
-                // console.log(v);
-                content += "<div class='swiper-slide'>"+
-                            "   <div class='card demo-card-header-pic red'>"+
+                content = "<div class='swiper-slide'>"+
+                            "   <div class='card demo-card-header-pic'>"+
                             "       <div class='card-header color-white no-border' valign='bottom' style='background-image:url(img/kareer_bg.png); height: 150px;'>"+
                             "           <div class='col s8 m8 l8'>"+
                             "               <h4>"+v.company+"<br/><small>"+v.address+"</small>"+
                             "               </h4>"+
                             "           </div>"+
                             "           <div class='col s4 m4 l4'>"+
-                            "               <button class='mdl-button mdl-js-button mdl-button--fab mdl-button--colored' style='background: rgb(156,39,176); top: 70px;'>"+
+                            "               <button class='btn-floating btn-large waves-effect waves-light' style='background: rgb(156,39,176); top: 30px;'>"+
                             "                   <i class='icon f7-icons color-white'>bookmark</i>"+
                             "               </button>"+
                             "           </div>"+
                             "       </div>"+
                             "       <div class='card-content'>"+
-                            "           <div class='card-content-inner'>"+
+                            "           <div class='card-content-inner' style='height:"+(height-300)+"px; overflow:hidden;'>"+
                             "               <p class='color-gray'>is in need of:</p>"+
                             "               <h5 class='color-teal'>"+v.job+"<br/>"+
                             "                   <small class='color-teal'><i class='icon f7-icons color-black' style='font-size: 20px;'>briefcase</i> Full Time</small>"+
                             "               </h5>"+
                             "               <p>"+
-                            "                   <div>"+
-                            "                       <strong>"+v.description+"</strong>"+
+                            "                   <div class='description' style='white-space: normal;'>"+
+                            "                       "+v.description+""+
                             "                   </div>"+
                             "               </p>"+
                             "           </div>"+
                             "       </div>"+
                             "       <div class='card-footer'>"+
-                            "           <a class='link ripple color-black' href='#'>Read More</a>"+
-                            "           <button class='mdl-button mdl-js-button mdl-button--fab mdl-button--colored' style='background: rgb(0, 150, 136); margin: 0;'>"+
+                            "           <a class='waves-effect waves-teal btn-flat' href='#'>Read More</a>"+
+                            "           <button class='waves-effect waves-light btn' style='background: rgb(0, 150, 136); margin: 0;'>"+
                             "               <i class='icon f7-icons color-white'>paper_plane_fill</i>"+
                             "           </button>"+
                             "       </div>"+
                             "   </div>"+
                             "</div>";
-            });
-            // console.log(content);
-            $("#content").html(content);
 
-            var swiper = app.swiper(".swiper-container",{
-                loop:false,
+	            $("#jobs .swiper-wrapper").append(content);
+				if($('#jobs .card-content-inner')[i].scrollHeight > $('#jobs .card-content-inner').innerHeight()){
+				    console.log("x");
+				}
+				// else{
+				// 	console.log("xx");
+				// }
+            });
+
+
+
+            var swiper = app.swiper(".swiper-container", {
+                loop: false,
                 speed: 400,
-                grabCursor:true,
-                effect:'coverflow',
+                grabCursor: true,
+                effect: 'coverflow',
                 coverflow: {
-                  rotate: 50,
-                  stretch: 0,
-                  depth: 100,
-                  modifier: 1,
-                  slideShadows : true
+                    rotate: 50,
+                    stretch: 0,
+                    depth: 100,
+                    modifier: 1,
+                    slideShadows: true
                 },
-                shortSwipes:true,
+                shortSwipes: true,
                 mousewheelControl: true
             });
 
@@ -594,5 +606,5 @@ Framework7.prototype.plugins.kareer = function (app, params) {
 
 var kareer_app = new Framework7({
 	kareer:true,
-	material:true
+	material:true,
 });

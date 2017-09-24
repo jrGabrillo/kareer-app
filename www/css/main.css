@@ -1,3 +1,6 @@
+#main-functions .content-block{
+    margin:40px 0px;
+}
 .tutorialicon {
     font-size: 250px;
     line-height: 170px;
@@ -122,4 +125,18 @@
 
 .center-align{
     text-align: center;
+}
+
+#jobs .card-content {
+    padding: 0px;
+    position: relative;
+    white-space: normal;
+}
+
+#jobs .card-header {
+    white-space: normal;
+}
+
+#jobs h4{
+    font-size: 20px;
 }
