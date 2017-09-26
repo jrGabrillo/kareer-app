@@ -145,7 +145,6 @@ Framework7.prototype.plugins.kareer = function (app, params) {
                         })
                     });
                 });
-
             }
 		},
 		controller:function(){
