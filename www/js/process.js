@@ -14,7 +14,7 @@ Framework7.prototype.plugins.kareer = function (app, params) {
     	ini:function(){
         	// var deviceSize = system.getDeviceSize();
         	// console.log(deviceSize);
-        	// logIn.ini();
+            // logIn.ini();
         	// signUp.ini();
         	content.ini();
     	},
@@ -107,38 +107,46 @@ Framework7.prototype.plugins.kareer = function (app, params) {
 
 	var content = {
 		ini:function(){
-			view.router.loadPage("pages/admin/account.html");
-			$$(".navbar").removeClass('hidden');
-			
-			app.onPageInit('account',function(page){
-				content.controller();
-				account.ini();
-			});			
+            var applicantData = JSON.parse(localStorage.getItem('applicant'));
+            if((applicantData == null) || (applicantData == "")){
+                view.router.loadPage("index.html");
+            }
+            else{
+                view.router.loadPage("pages/admin/account.html");
+                $$(".navbar").removeClass('hidden');
 
-			app.onPageInit('job',function(page){
-				content.controller();
-				var applicant = JSON.parse(localStorage.getItem('applicant'));
-				var jobList = jobs.get(applicant[0][0]);
-				jobs.show(jobList);
-			});
+                
+                app.onPageInit('account',function(page){
+                    content.controller();
+                    account.ini();
+                });         
 
-			app.onPageInit('search',function(page){
-				content.controller();
-				var slider = document.getElementById('test-slider');
-				noUiSlider.create(slider, {
-					start: [20, 80],
-					connect: true,
-					step: 1,
-					orientation: 'horizontal', // 'horizontal' or 'vertical'
-					range: {
-						'min': 0,
-						'max': 100
-					},
-					format: wNumb({
-						decimals: 0
-					})
-				});
-			});
+                app.onPageInit('job',function(page){
+                    content.controller();
+                    var applicant = JSON.parse(localStorage.getItem('applicant'));
+                    var jobList = jobs.get(applicant[0][0]);
+                    jobs.show(jobList);
+                });
+
+                app.onPageInit('search',function(page){
+                    content.controller();
+                    var slider = document.getElementById('test-slider');
+                    noUiSlider.create(slider, {
+                        start: [20, 80],
+                        connect: true,
+                        step: 1,
+                        orientation: 'horizontal', // 'horizontal' or 'vertical'
+                        range: {
+                            'min': 0,
+                            'max': 100
+                        },
+                        format: wNumb({
+                            decimals: 0
+                        })
+                    });
+                });
+
+            }
 		},
 		controller:function(){
 			$$("a").on('click',function(){
@@ -161,7 +169,6 @@ Framework7.prototype.plugins.kareer = function (app, params) {
 	var account = {
 		ini:function(){
 			var applicantData = JSON.parse(localStorage.getItem('applicant'));
-			// jobs.applied(applicantData[0][0]);
 			jobs.bookmarked(applicantData[0][0]);
 			$$("#account img.responsive-img").attr({"src":"img/profile/"+applicantData[0][18]});
 
@@ -560,12 +567,7 @@ Framework7.prototype.plugins.kareer = function (app, params) {
     var jobs = {
         show:function(list){
 			var applicantData = JSON.parse(localStorage.getItem('applicant'));
-			// var applications = JSON.parse(localStorage.getItem('applications'));
 			var bookmarks = JSON.parse(localStorage.getItem('bookmarks'));
-
-			console.log(list);
-
-			console.log(bookmarks);
 
             var content = "";
             var height = $(window).height();
