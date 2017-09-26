@@ -5,6 +5,7 @@ Framework7.prototype.plugins.kareer = function (app, params) {
     'use strict';
     if (!params) return;
     var self = this;
+    // var processor = 'http://localhost/kareer/kareer/assets/harmony/mobile.php?';
     var processor = 'http://kareerserver.rnrdigitalconsultancy.com/assets/harmony/mobile.php?';
     var directory = '/';
 	var $$ = Dom7;
@@ -14,9 +15,9 @@ Framework7.prototype.plugins.kareer = function (app, params) {
     	ini:function(){
         	// var deviceSize = system.getDeviceSize();
         	// console.log(deviceSize);
-            // logIn.ini();
-        	// signUp.ini();
-        	content.ini();
+            logIn.ini();
+        	signUp.ini();
+        	// content.ini();
     	},
         notification:function(title,message,button,timeout,loader,_functionOpen,_functionClose){
             var timeout = (timeout == "")?false:timeout;
@@ -44,8 +45,6 @@ Framework7.prototype.plugins.kareer = function (app, params) {
                 type: "POST",
                 url: url,
                 data: {data: data},
-                async: !1,
-                cache:false,
                 error: function() {
                     console.log("Error occured")
                 }
@@ -113,8 +112,8 @@ Framework7.prototype.plugins.kareer = function (app, params) {
             }
             else{
                 view.router.loadPage("pages/admin/account.html");
+                // view.router.loadPage("index.html");
                 $$(".navbar").removeClass('hidden');
-
                 
                 app.onPageInit('account',function(page){
                     content.controller();
@@ -238,6 +237,7 @@ Framework7.prototype.plugins.kareer = function (app, params) {
 	                var _form = $(form).serializeArray();
 	                var data = system.ajax(processor+'do-logIn',_form);
 	                data.done(function(data){
+                        // console.log(data);
 	                    if(data != 0){
                         	$$("input").val("");
                             system.notification("Kareer","Success. Please wait.",false,2000,true,false,function(){
