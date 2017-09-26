@@ -22,7 +22,7 @@
         <div class="views">
             <div class="view view-main">
                 <div class="pages">
-                    <div class="navbar white" style="border-bottom: 1px solid #ccc;">
+                    <div class="navbar white hidden" style="border-bottom: 1px solid #ccc;">
                         <div class="navbar-inner">
                             <div class="left">
                                 <a href="#" data-page="account" class="button color-gray"><i class="icon f7-icons">person</i></a> <!-- pages/admin/account.html -->
@@ -46,10 +46,10 @@
                                 <div class="list-block" style="width: 100%;">
                                     <ul>
                                         <li style="text-align: center;">
-                                            <a href="#" data-popup=".popup-login" class="open-popup list-button item-link bg-cyan ripple" style="opacity: 0.8;">Sign In</a>
+                                            <a href="#" data-popup=".popup-login" class="open-popup list-button item-link bg-cyan" style="opacity: 0.8;">Sign In</a>
                                         </li>
                                         <li style="text-align: center;">
-                                            <a href="#" data-popup=".popup-sign-up" class="open-popup list-button item-link bg-deeppurple ripple" style="opacity: 0.8;">Sign Up</a>
+                                            <a href="#" data-popup=".popup-sign-up" class="open-popup list-button item-link bg-deeppurple" style="opacity: 0.8;">Sign Up</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -99,13 +99,13 @@
                             <ul>
                                 <li style="margin-bottom: 10px;">
                                     <div class="input-field">
-                                        <input type='email' id="field_email" name="field_email" class="form-control color-white" value="rufo.gabrillo@gmail.com">
+                                        <input type='email' id="field_email" name="field_email" class="form-control color-white">
                                         <label class="white-text" for="field_email">Email</label>
                                     </div>
                                 </li>
                                 <li style="margin-bottom: 10px;">
                                     <div class="input-field">
-                                        <input type='password' id="field_password" name="field_password" class="form-control color-white" value="Password7836!">
+                                        <input type='password' id="field_password" name="field_password" class="form-control color-white">
                                         <label class="white-text" for="field_password">Password</label>
                                     </div>
                                 </li>
@@ -124,8 +124,8 @@
                                         <span class="hr color-white"> or Sign up using </span>
                                     </div>
                                     <div class="col-100" style='background: transparent;'>
-                                        <img src="img/icons/fb.png" width="30px" />
-                                        <img src="img/icons/gp.png" width="30px" />
+                                        <!-- <img src="img/icons/fb.png" width="30px" /> -->
+                                        <!-- <img src="img/icons/gp.png" width="30px" /> -->
                                     </div>
                                 </div>
                             </div>
@@ -143,25 +143,25 @@
                             <ul>
                                 <li>
                                     <div class="input-field">
-                                        <input type='text' id="field_firstname" name="field_firstname" class="form-control white-text" value="Rufo">
+                                        <input type='text' id="field_firstname" name="field_firstname" class="form-control white-text">
                                         <label class="white-text" for="field_firstname">First Name</label>
                                     </div>
                                 </li>
                                 <li>
                                     <div class="input-field">
-                                        <input type='text' id="field_lastname" name="field_lastname" class="form-control white-text" value="Gabrillo">
+                                        <input type='text' id="field_lastname" name="field_lastname" class="form-control white-text">
                                         <label class="white-text" for="field_lastname">Last Name</label>
                                     </div>
                                 </li>
                                 <li>
                                     <div class="input-field">
-                                        <input type='email' id="field_email" name="field_email" class="form-control white-text" value="rufo.gabrillo@gmail.com">
+                                        <input type='email' id="field_email" name="field_email" class="form-control white-text">
                                         <label class="white-text" for="field_email">Email</label>
                                     </div>
                                 </li>
                                 <li>
                                     <div class="input-field">
-                                        <input type='password' id="field_password" name="field_password" class="form-control white-text" value="Password7836!">
+                                        <input type='password' id="field_password" name="field_password" class="form-control white-text">
                                         <label class="white-text" for="field_password">Password</label>
                                     </div>
                                 </li>
@@ -177,8 +177,8 @@
                                         <span class="hr color-white"> or Sign up using </span>
                                     </div>
                                     <div class="col-100" style='background: transparent;'>
-                                        <img src="img/icons/fb.png" width="30px"/>
-                                        <img src="img/icons/gp.png" width="30px"/>
+                                        <!-- <img src="img/icons/fb.png" width="30px"/> -->
+                                        <!-- <img src="img/icons/gp.png" width="30px"/> -->
                                     </div>
                                 </div>
                             </div>
@@ -197,6 +197,7 @@
     <script src="js/myapp/init.js"></script>
     <script src="js/validation/jquery.validate.min.js "></script>
     <script src="js/validation/additional-methods.min.js "></script>
-    <script src="js/process.js"></script>
+    <script src="js/defiant.min.js "></script>
     <script src="js/my-app.js "></script>
+    <script src="js/process.js"></script>
 </html>
