@@ -1,116 +1,55 @@
-var myApp = new Framework7();
- 
-// If we need to use custom DOM library, let's save it to $$ variable:
+var app = new Framework7({material:true});
 var $$ = Dom7;
- 
-// Add view
-var mainView = myApp.addView('.view-main', {
-  // Because we want to use dynamic navbar, we need to enable it for this view:
-  dynamicNavbar: true
-});
-// Initialize app and store it to myApp variable for futher access to its methods
-var myApp = new Framework7();
- 
-// We need to use custom DOM library, let's save it to $$ variable:
-var $$ = Dom7;
- 
-// Add view
-var mainView = myApp.addView('.view-main', {
-  // Because we want to use dynamic navbar, we need to enable it for this view:
-  dynamicNavbar: true
-});
- 
-// Now we need to run the code that will be executed only for About page.
- 
-// Option 1. Using page callback for page (for "about" page in this case) (recommended way):
-myApp.onPageInit('about', function (page) {
-  // Do something here for "about" page
-  
-})
- 
-// Option 2. Using one 'pageInit' event handler for all pages:
-$$(document).on('pageInit', function (e) {
-  // Get page data from event data
-  var page = e.detail.page;
-  
-  if (page.name === 'about') {
-    // Following code will be executed for page with data-page attribute equal to "about"
-    myApp.alert('Here comes About page');
-  }
-})
- 
-// Option 2. Using live 'pageInit' event handlers for each page
-$$(document).on('pageInit', '.page[data-page="about"]', function (e) {
-  // Following code will be executed for page with data-page attribute equal to "about"
-  myApp.alert('Here comes About page');
-})
-
-var myApp = new Framework7();
-var $$ = Dom7;
- 
-var mainView = myApp.addView('.view-main');
- 
-myApp.onPageInit('login-screen', function (page) {
-  var pageContainer = $$(page.container);
-  pageContainer.find('.list-button').on('click', function () {
-    var username = pageContainer.find('input[name="username"]').val();
-    var password = pageContainer.find('input[name="password"]').val();
-    // Handle username and password
-    myApp.alert('Username: ' + username + ', Password: ' + password, function () {
-      mainView.goBack();
-    });
-  });
+var mainView = app.addView('.view-main', {
+    dynamicNavbar: true
 });
 
-// swipe
- var myApp = new Framework7();
+app.onPageInit('about', function(page) {})
+$$(document).on('pageInit', function(e) {
+    var page = e.detail.page;
+    if (page.name === 'about') {
+        app.alert('Here comes About page');
+    }
+});
 
-         var mySwiper = myApp.swiper('.swiper-container', {
-            pagination:'.swiper-pagination',
-            spaceBetween: 100
-         });
+$$(document).on('pageInit', '.page[data-page="about"]', function(e) {
+    app.alert('Here comes About page');
+});
 
- var myApp = new Framework7();
-         var mainView = myApp.addView('.view-main');
-
-  // Here you can initialize the app
-         var myApp = new Framework7();
-
-         // If your using custom DOM library, then save it to $$ variable
-         var $$ = Dom7;
-
-         // Add the view
-         var mainView = myApp.addView('.view-main', {
-            // enable the dynamic navbar for this view:
-            dynamicNavbar: true
-         });
-
-         $$('.confirm-ok').on('click', function () {
-            myApp.confirm('Are you ready to begin?', function () {
-               myApp.alert('You have clicked the Ok button!!!');
-            });
-         });
-     var myApp = new Framework7();
- 
-    var $$ = Dom7;
- 
-    $$('.open-left-panel').on('click', function (e) {
-        // 'left' position to open Left panel
-        myApp.openPanel('left');
+app.onPageInit('login-screen', function(page) {
+    var pageContainer = $$(page.container);
+    pageContainer.find('.list-button').on('click', function() {
+        var username = pageContainer.find('input[name="username"]').val();
+        var password = pageContainer.find('input[name="password"]').val();
+        app.alert('Username: ' + username + ', Password: ' + password, function() {
+            mainView.goBack();
+        });
     });
- 
-    $$('.open-right-panel').on('click', function (e) {
-        // 'right' position to open Right panel
-        myApp.openPanel('right');
-    });
- 
-    $$('.panel-close').on('click', function (e) {
-        myApp.closePanel();
-    });
+});
 
+var mySwiper = app.swiper('.swiper-container', {
+    pagination: '.swiper-pagination',
+    spaceBetween: 100
+});
 
+$$('.open-left-panel').on('click', function(e) {
+    app.openPanel('left');
+});
 
-    var calendarDefault = myApp.calendar({
+$$('.open-right-panel').on('click', function(e) {
+    app.openPanel('right');
+});
+
+$$('.panel-close').on('click', function(e) {
+    app.closePanel();
+});
+
+var calendarDefault = app.calendar({
     input: '#calendar-default',
-});          
- 
+});
+
+$$('.popup-sign-up, .popup-login').on('popup:open',function(){
+    $$("#displayLogo").attr({"style":"position:relative; top:-200px;"});
+}).on('popup:close',function(){
+    $$("#displayLogo").attr({"style":"position:relative; top:0px;"});
+}); 

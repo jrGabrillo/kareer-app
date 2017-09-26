@@ -5,7 +5,7 @@ Framework7.prototype.plugins.kareer = function (app, params) {
     'use strict';
     if (!params) return;
     var self = this;
-    var processor = '../../kareer/kareer/assets/harmony/mobile.php?';
+    var processor = 'http://kareerserver.rnrdigitalconsultancy.com/assets/harmony/mobile.php?';
     var directory = '/';
 	var $$ = Dom7;
 	var view = app.addView('.view-main');
@@ -53,12 +53,13 @@ Framework7.prototype.plugins.kareer = function (app, params) {
         },
         html:function(url){
             return $.ajax({
-                type: "POST",
+                type: "GET",
                 url: url,
-                dataType: 'html',
-                data: {data: "kareer"},
-                async: !1,
-                cache:false,
+                crossDomain: true,
+                dataType:'jsonp',
+                jsonp:true,
+                headers: 'X-Requested-With: XMLHttpRequest',
+                contentType:'application/x-www-form-urlencoded; charset=UTF-8',
                 error: function() {
                     console.log("Error occured")
                 }
@@ -106,16 +107,44 @@ Framework7.prototype.plugins.kareer = function (app, params) {
 
 	var content = {
 		ini:function(){
-			view.router.loadPage("pages/admin/jobs.html");
-			app.onPageInit('features', function (page) {
+			view.router.loadPage("pages/admin/account.html");
+			$$(".navbar").removeClass('hidden');
+			
+			app.onPageInit('account',function(page){
 				content.controller();
-				jobs.show();
-			})
-			// content.pageContent('index.html');
+				account.ini();
+			});			
+
+			app.onPageInit('job',function(page){
+				content.controller();
+				var applicant = JSON.parse(localStorage.getItem('applicant'));
+				var jobList = jobs.get(applicant[0][0]);
+				jobs.show(jobList);
+			});
+
+			app.onPageInit('search',function(page){
+				content.controller();
+				var slider = document.getElementById('test-slider');
+				noUiSlider.create(slider, {
+					start: [20, 80],
+					connect: true,
+					step: 1,
+					orientation: 'horizontal', // 'horizontal' or 'vertical'
+					range: {
+						'min': 0,
+						'max': 100
+					},
+					format: wNumb({
+						decimals: 0
+					})
+				});
+			});
 		},
 		controller:function(){
 			$$("a").on('click',function(){
-				console.log("a");
+				var data = $$(this).data('page');
+				console.log(data);
+				view.router.loadPage("pages/admin/"+data+".html");
 				$("a").removeClass('color-teal').addClass('color-gray');
 				$(this).removeClass('color-gray').addClass('color-teal')
 				// content.pageContent(page+'.html');
@@ -125,6 +154,46 @@ Framework7.prototype.plugins.kareer = function (app, params) {
 			var pageContent = system.ajax('pages/admin/'+url,'');
 			pageContent.done(function(data){
 				$$('body .views .view').html(data);
+			})
+		}
+	}
+
+	var account = {
+		ini:function(){
+			var applicantData = JSON.parse(localStorage.getItem('applicant'));
+			// jobs.applied(applicantData[0][0]);
+			jobs.bookmarked(applicantData[0][0]);
+			$$("#account img.responsive-img").attr({"src":"img/profile/"+applicantData[0][18]});
+
+			var content = "<div class='content-block'>"+
+							"    <p class='color-gray'>"+
+							"        <h5>"+applicantData[0][6]+" "+applicantData[0][7]+"</h5>"+
+							"    </p>"+
+							// "    <p>"+
+							// "        <span><strong>Chief Technology Officer</strong> Pangasinan</span>"+
+							// "    </p>"+
+							"</div>"+
+							"<div class='content-block'>"+
+							"    <div class='row'>"+
+							"        <div class='col-33'>"+
+							"            <a data-cmd='account' data-node='"+applicantData[0][0]+"' class='btn-floating btn-large waves-effect waves-light grey lighten-4 btn-flat'><i class='icon f7-icons color-gray'>list</i></a>Account"+
+							"        </div>"+
+							"        <div class='col-33'>"+
+							"            <a data-cmd='career' data-node='"+applicantData[0][0]+"' class='btn-floating btn-large waves-effect waves-light grey lighten-4 btn-flat'><i class='icon f7-icons color-gray'>briefcase</i></a>Career"+
+							"        </div>"+
+							"        <div class='col-33'>"+
+							"            <a data-cmd='academic' data-node='"+applicantData[0][0]+"' class='btn-floating btn-large waves-effect waves-light grey lighten-4 btn-flat'><i class='icon f7-icons color-gray'>folder</i></a>Academic"+
+							"        </div>"+
+							"    </div>"+
+							"</div>";
+			$$("#display_account").html(content);
+
+			$("a.btn-floating").on('click',function(){
+				var _this = this;
+				var data = $(this).data();
+				var node = data.node;
+
+				console.log(data);
 			})
 		}
 	}
@@ -163,12 +232,12 @@ Framework7.prototype.plugins.kareer = function (app, params) {
 	                var _form = $(form).serializeArray();
 	                var data = system.ajax(processor+'do-logIn',_form);
 	                data.done(function(data){
-	                	console.log(data);
-	                    if(data == 1){
+	                    if(data != 0){
                         	$$("input").val("");
                             system.notification("Kareer","Success. Please wait.",false,2000,true,false,function(){
 			                	app.closeModal('.popup-login', true);
-					        	content.controller();
+					        	content.ini();
+					        	localStorage.setItem('applicant',data);
                             });
 	                    }
 	                    else{
@@ -236,9 +305,11 @@ Framework7.prototype.plugins.kareer = function (app, params) {
                     var data = system.ajax(processor+'do-signUp',_form);
                     data.done(function(data){
                         if(data == 1){
-                            system.notification("Kareer","Success. Account created.",false,2000,true,function(){},false);
                         	$$("input").val("");
-				        	content.controller();
+                            system.notification("Kareer","Success. You can now Sign In to your account. ",false,2000,true,false,function(){
+			                	app.closeModal('.popup-sign-up', true);
+			                	app.popup('popup-login');
+                            });
                         }
                         else if(data == 2){
                             system.notification("Kareer","Try other email address.",false,3000,true,function(){},false);
@@ -254,7 +325,7 @@ Framework7.prototype.plugins.kareer = function (app, params) {
                 system.notification("Kareer",data[0].dataset.error,false,3000,true,function(){},false);
             });         
         },
-        persnal:function(){
+        personal:function(){
             $("#form_personal_info").validate({
                 rules: {
                     field_last_name: {required: true, maxlength:50},
@@ -389,7 +460,7 @@ Framework7.prototype.plugins.kareer = function (app, params) {
                 submitHandler: function (form) {
                     var _form = $('#form_academic_info').serializeArray();
                     var data = system.ajax(processor+'do-academic-info',_form);
-                    conosole.log(data.responseText);
+                    console.log(data.responseText);
                     data.done(function(data){
                         if(data == 1){
                             system.notification("Kareer","Success",false,3000,true,function(){},false);
@@ -487,94 +558,101 @@ Framework7.prototype.plugins.kareer = function (app, params) {
     }
 
     var jobs = {
-        show:function(){
-            var jobs = [
-                {
-                    "company":"RNR Digital Consultancy",
-                    "address":"Lingayen Pangasinan",
-                    "job":"App Developer",
-                    "description":"We are looking for hard working individuals who would like to be part of our fast growing team!! &nbsp;&nbsp;Immediate hiring!&nbsp;",
-                    "detail":"We are looking for hard working individuals who would like to be part of our fast growing team!! &nbsp;&nbsp;Immediate hiring!&nbsp; We are looking for hard working individuals who would like to be part of our fast growing team!! &nbsp;&nbsp;</strong><strong>Immediate hiring!&nbsp;We are looking for hard working individuals who would like to be part of our fast growing team!! &nbsp;&nbsp;</strong><strong>Immediate hiring!&nbsp;"
-                },
-                {
-                    "company":"Business Profiles, Inc",
-                    "address":"Ortigas City",
-                    "job":"Research Communications Associate",
-                    "description":"<ul><li>Research &amp; Analysis&nbsp;</li><li>Writing &amp; Editing</li><li>Project Support and Coordination</li></ul>",
-                    "detail":"<ul><li>Candidate must possess at least a Bachelor's/College Degree , Computer Science/Information Technology or equivalent.</li><li>With at least 2 years of experience in the related field is required for this position.</li><li>Knowledgeable in Basic SQL Database / IIS and Apache Administration</li> <li>Must be willing to work in Makati City</li></ul>"
-                },
-                {
-                    "company":"ORIX METRO Leasing and Finance Corporation",
-                    "address":"MAkati City",
-                    "job":"Server Specialist",
-                    "description":"• Work on interesting project• Opportunities for learning and professional growth• Opportunities to travel",
-                    "detail":"<div class='col-lg-12 col-md-12 col-sm-12'><h2 class=job-ads-h2><span class=icon-edit-pencil></span> JOB DESCRIPTION</h2><div class='unselectable wrap-text' id=job_description itemprop=description><ul><li>Assists the Systems and Database Administrator in the monitoring and management of the applications and database infrastructure<li>Deploys application and database changes primarily in the Production, Staging and QA environments<li>Provides support to the Programmers, Analysts and QAs in their setup and access requirement in their respective environments<li>Assist third party personnel during the installation and configuration of new systems and database and during troubleshooting and remediation of escalated issues<li>Maintains the inventory of third party licenses such as but not limited to Microsoft Servers, Microsoft Office, Oracle, VMWare and Anti-Virus system<li>Will assist in the migration projects</ul><div> </div><div><strong>Job Requirements</strong></div><div> </div><ul><li>Candidate must possess at least a Bachelor's/College Degree , Computer Science/Information Technology or equivalent.<li>With at least 2 years of experience in the related field is required for this position.<li>Knowledgeable in Basic SQL Database / IIS and Apache Administration<li>Must be willing to work in Makati City</ul><div>______________________________________________</div><div> </div><div>Interested applicants may apply online by clicking the <strong>Apply Now</strong> button or<br>may submit their resume with most recent 2x2 photo and Transcript of Records to:<div> </div><div><strong>THE HUMAN RESOURCES DEPARTMENT</strong><br>ORIX METRO Leasing and Finance Corporation<br>10F GT Tower Int'l Ayala Ave., cor. HV dela Costa St., Makati City</div></div></div></div>"
-                },
-                {
-                    "company":"ORIX METRO Leasing and Finance Corporation",
-                    "address":"Manila",
-                    "job":"Systems - Business Analyst",
-                    "description":"<ul><li>Evaluates computerization requirements of specific users and in accordance with the requirements, designs the computer system, formulates programming specifications, timetable, training of users and implementation of projects.<li>Translates IT software project plans into tangible deliverables.<li>Performs and evaluates risk analysis for all application systems under development.<li>Employs tools and techniques of systems analysis and design which enables adequate documentation of the system at each stage of the development project.<li>Provides an analysis of the computer resources required by new and revised applications and makes the necessary recommendation/s in the adjustments in the database set-up and configuration before the implementation.<li>Recommends process that will enhance the user-friendliness of present applications.<li>Collaborates with the Immediate Superior in estimating the hardware, software and manpower requirements of the project.<li>Coordinates with Server and Database Administrator as well as Data Specialist in the creation of database tables.<li>Incorporates appropriate internal control and security requirements in all new application systems to be developed or modified that will secure accuracy, completeness, timeliness and authorization of inputs and outputs.<li>Provides testing for security routine in the programs/systems before it gets deployed in a production environment.<li>Ensures that recent versions of programs are updated in the source program library.</ul>",
-                    "detail":"<ul><li>Candidate must possess at least a Bachelor's/College Degree , Engineering (Computer/Telecommunication), Computer Science/Information Technology or equivalent.<li>At least four (4) years experience in systems or business analysis, design and web programming.<li>Possess familiarity and knowledge in Java, Microsoft .Net,  PHP, SQL programming, UNIX and windows;<li>Familiar with UML, flowcharting, use-case and ERD.<li>Understanding of database management systems, decision support technologies, Enterprise Resource Planning (ERP) and other business process solutions.<li>Preferably with background experience working in a Financial Institution and has familiarity with its front-end and back-end operations.<li>With strong analytical perception; Above average oral and written communication skills<li>Professionally disciplined, proactive and results-oriented; Ability to methodically as well as efficiently perform at work</ul>"
-                },
-                {
-                    "company":"Ranida Games Inc.",
-                    "address":"San Pedro Laguna",
-                    "job":"Game Designer",
-                    "description":"<ul><li>Able to design engaging and fun systems, levels, and gameplay mechanics and features that are in line with client/internal requirements<li>Create, define, and maintain the Game Design Document (GDD)<li>Present and communicate the design to other members of the team<li>Implement and oversee design decisions such as metrics, numbers, formulas, economies, level design, systems, story, scripts, texts, etc.<li>Create clear and concise mock-ups, game flow, and wireframes<li>Participate in all aspects of the development process from conceptualization, implementation, final release, and feedback</ul>",
-                    "detail":"<ul><li>Must be a passionate gamer and able to deconstruct and critically analyze games<li>At least over a year of industry experience as a designer<li>Excellent communication skills both in oral and written English<li>Works well with other members of a team through various disciplines both in-house and working remotely<li>Working knowledge of math and trigonometry to be used in game design implementation<li>Efficiently use Word Processing programs, Spreadsheets, and Presentation programs such as Word, Google Docs, PowerPoint, Excel, etc.<li>Can work efficiently with minimal supervision</ul>"
-                },
-            ];
+        show:function(list){
+			var applicantData = JSON.parse(localStorage.getItem('applicant'));
+			// var applications = JSON.parse(localStorage.getItem('applications'));
+			var bookmarks = JSON.parse(localStorage.getItem('bookmarks'));
+
+			console.log(list);
+
+			console.log(bookmarks);
 
             var content = "";
             var height = $(window).height();
-            console.log(height);
-            $.each(jobs,function(i,v){
+            $.each(list,function(i,v){
+            	var skills = "", bookmarkButtonSettings = "";
+
+            	$.each(bookmarks,function(i3,v3){
+	            	bookmarkButtonSettings = ($.inArray(v[0],v3,1)>=0)?"disabled":"";
+            	});
+
+            	$.each(v[5],function(i2,v2){
+            		skills += "<div class='chip'><div class='chip-media bg-teal'>J</div><div class='chip-label'>"+v2+"</div></div>";
+            	});
+
                 content = "<div class='swiper-slide'>"+
                             "   <div class='card demo-card-header-pic'>"+
                             "       <div class='card-header color-white no-border' valign='bottom' style='background-image:url(img/kareer_bg.png); height: 150px;'>"+
                             "           <div class='col s8 m8 l8'>"+
-                            "               <h4>"+v.company+"<br/><small>"+v.address+"</small>"+
+                            "               <h4>"+v[1]+"<br/><small>"+v[2]+"</small>"+
                             "               </h4>"+
                             "           </div>"+
                             "           <div class='col s4 m4 l4'>"+
-                            "               <button class='btn-floating btn-large waves-effect waves-light' style='background: rgb(156,39,176); top: 30px;'>"+
-                            "                   <i class='icon f7-icons color-white'>bookmark</i>"+
+                            "               <button "+bookmarkButtonSettings+" data-node='"+(JSON.stringify([v[0],applicantData[0][0]]))+"' data-cmd='bookmark' class='btn-floating btn-large waves-effect waves-light purple icon f7-icons color-white' style='top: 30px;opacity:1;'>"+
+                            "                   bookmark"+
                             "               </button>"+
                             "           </div>"+
                             "       </div>"+
                             "       <div class='card-content'>"+
                             "           <div class='card-content-inner' style='height:"+(height-300)+"px; overflow:hidden;'>"+
                             "               <p class='color-gray'>is in need of:</p>"+
-                            "               <h5 class='color-teal'>"+v.job+"<br/>"+
-                            "                   <small class='color-teal'><i class='icon f7-icons color-black' style='font-size: 20px;'>briefcase</i> Full Time</small>"+
+                            "               <h5 class='color-teal'>"+v[3]+"<br/>"+
+                            "                   "+skills+""+
                             "               </h5>"+
                             "               <p>"+
                             "                   <div class='description' style='white-space: normal;'>"+
-                            "                       "+v.description+""+
+                            "                       "+v[4]+""+
                             "                   </div>"+
                             "               </p>"+
                             "           </div>"+
                             "       </div>"+
                             "       <div class='card-footer'>"+
-                            "           <a class='waves-effect waves-teal btn-flat' href='#'>Read More</a>"+
-                            "           <button class='waves-effect waves-light btn' style='background: rgb(0, 150, 136); margin: 0;'>"+
-                            "               <i class='icon f7-icons color-white'>paper_plane_fill</i>"+
+                            "           <a class='waves-effect waves-teal btn-flat hidden' href='#'>Read More</a>"+
+                            "           <button data-node='"+(JSON.stringify([v[0],applicantData[0][0]]))+"' data-cmd='apply' class='waves-effect waves-light btn icon f7-icons color-white' style='background: rgb(0, 150, 136); margin: 0;'>"+
+                            "               paper_plane_fill"+
                             "           </button>"+
                             "       </div>"+
                             "   </div>"+
                             "</div>";
 
 	            $("#jobs .swiper-wrapper").append(content);
-				if($('#jobs .card-content-inner')[i].scrollHeight > $('#jobs .card-content-inner').innerHeight()){
-				    console.log("x");
-				}
-				// else{
-				// 	console.log("xx");
+				// if($('#jobs .card-content-inner')[i].scrollHeight > $('#jobs .card-content-inner').innerHeight()){
+				//     console.log("x");
 				// }
             });
 
+			$("button.icon").on('click',function(){
+				var _this = this;
+				var data = $(this).data();
+				var node = data.node;
+				if(data.cmd == "bookmark"){
+					var apply = system.ajax(processor+'do-bookmark',node);
+					apply.done(function(e){
+	                    if(e == 1){
+                            system.notification("Kareer","Done.",false,2000,true,false,function(){
+								$(_this).attr({"disabled":true});
+                            });
+	                    }
+	                    else{
+	                        system.notification("Kareer","Failed.",false,3000,true,false,false);
+	                    }
+					})
+				}
 
+				if(data.cmd == "apply"){
+					var apply = system.ajax(processor+'do-apply',node);
+					apply.done(function(e){
+	                    if(e == 1){
+                            system.notification("Kareer","Success. Application sent.",false,2000,true,false,function(){
+								$(_this).attr({"disabled":true});
+                            });
+	                    }
+	                    else{
+	                        system.notification("Kareer","Failed.",false,3000,true,false,false);
+	                    }
+					})
+				}
+			})
 
             var swiper = app.swiper(".swiper-container", {
                 loop: false,
@@ -589,11 +667,29 @@ Framework7.prototype.plugins.kareer = function (app, params) {
                     slideShadows: true
                 },
                 shortSwipes: true,
-                mousewheelControl: true
+                mousewheelControl: true,
+                // onScroll(swiper, e){
+                // 	console.log(e);
+                // },
+                // onTouchEnd(swiper, e){
+                // 	console.log(e);
+                // }
             });
 
             var documentHeight = $(window).height();
             $("#content .card-content").attr({"style":"height:"+(documentHeight-310)+"px; overflow:hidden; text-overflow: ellipsis;"});
+        },
+        applied:function(id){
+	        var applications = system.ajax(processor+'get-applcation',id);
+        	localStorage.setItem('applications',applications.responseText);
+        },
+        bookmarked:function(id){
+	        var applications = system.ajax(processor+'get-bookmarks',id);
+        	localStorage.setItem('bookmarks',applications.responseText);
+        },
+        get:function(id){
+	        var jobs = system.ajax(processor+'get-jobs',id);
+	        return JSON.parse(jobs.responseText);
         }
     }
 

@@ -2,6 +2,7 @@
 <html ng-app="myapp" class="pixel-ratio-3 retina android android-5 android-5-0 watch-active-state">
     <head>
         <meta charset="utf-8">
+        <!-- <meta http-equiv="Content-Security-Policy" content="default-src *; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data:"> -->
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -21,6 +22,19 @@
         <div class="views">
             <div class="view view-main">
                 <div class="pages">
+                    <div class="navbar white hidden" style="border-bottom: 1px solid #ccc;">
+                        <div class="navbar-inner">
+                            <div class="left">
+                                <a href="#" data-page="account" class="button color-gray"><i class="icon f7-icons">person</i></a> <!-- pages/admin/account.html -->
+                            </div>
+                            <div class="center" style="margin:0 auto;">
+                                <a href="#" data-page="jobs" class="button color-teal"><i class="icon f7-icons">briefcase_fill</i></a>
+                            </div>
+                            <div class="right" style="margin-left:unset;">
+                                <a href="#" data-page="search" class="button color-gray"><i class="icon f7-icons">search_strong</i></a> <!-- pages/admin/search.html -->
+                            </div>        
+                        </div>
+                    </div>
                     <div data-page='index' class="page hidden" data-node="page-initialization" style="background-image: url(img/kareer_bg.png);">
                         <div class="page-content">
                             <div class="button-row" id="splashScreen">  
@@ -32,10 +46,10 @@
                                 <div class="list-block" style="width: 100%;">
                                     <ul>
                                         <li style="text-align: center;">
-                                            <a href="#" data-popup=".popup-login" class="open-popup list-button item-link bg-cyan ripple" style="opacity: 0.8;">Sign In</a>
+                                            <a href="#" data-popup=".popup-login" class="open-popup list-button item-link bg-cyan" style="opacity: 0.8;">Sign In</a>
                                         </li>
                                         <li style="text-align: center;">
-                                            <a href="#" data-popup=".popup-sign-up" class="open-popup list-button item-link bg-deeppurple ripple" style="opacity: 0.8;">Sign Up</a>
+                                            <a href="#" data-popup=".popup-sign-up" class="open-popup list-button item-link bg-deeppurple" style="opacity: 0.8;">Sign Up</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -183,6 +197,7 @@
     <script src="js/myapp/init.js"></script>
     <script src="js/validation/jquery.validate.min.js "></script>
     <script src="js/validation/additional-methods.min.js "></script>
+    <script src="js/defiant.min.js "></script>
     <script src="js/process.js"></script>
     <script src="js/my-app.js "></script>
 </html>

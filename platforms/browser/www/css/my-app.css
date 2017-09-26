@@ -1,15 +1,4 @@
-.swiper-container {
-    height: 100%;
-}
-.swiper-slide {
-    background: #fff;
-}
-.swiper-slide span {
-    text-align: center;
-    display: block;
-    margin: 20px;
-    font-size: 21px;
-}
+
 div[class*="col-"] {
     background: #fff;
     color: #000;
@@ -23,43 +12,6 @@ div[class*="col1-"] {
 }
 
 /* label color */
-
-.input-field label {
-    color: #000;
-}
-
-/* label focus color */
-
-.input-field input[type=text]:focus+label {
-    color: #000;
-}
-
-/* label underline focus color */
-
-.input-field input[type=text]:focus {
-    border-bottom: 1px solid #000;
-    box-shadow: 0 1px 0 0 #000;
-}
-
-/* valid color */
-
-.input-field input[type=text].valid {
-    border-bottom: 1px solid #000;
-    box-shadow: 0 1px 0 0 #000;
-}
-
-/* invalid color */
-
-.input-field input[type=text].invalid {
-    border-bottom: 1px solid #000;
-    box-shadow: 0 1px 0 0 #000;
-}
-
-/* icon prefix focus color */
-
-.input-field .prefix.active {
-    color: #000;
-}
 #splashScreen a.button {
     border-radius: 0px !important;
 }
@@ -83,17 +35,6 @@ div[class*="col1-"] {
     margin-right: auto;
     transition: 0.5s;
     -webkit-transition: 0.5s;
-}
-input.form-control::placeholder, input[type=text]::placeholder, input[type=password]::placeholder {
-    color: #fff !important;
-}
-input.form-control, input[type=text], input[type=password] {
-    background: transparent !important;
-    color: #fff !important;
-    height: 46px !important;
-    border: #fff solid 2px !important;
-    border-radius: 0px 6px 6px 0px !important;
-    border-left: none !important;
 }
 span.hr:after, span.hr:before {
     content: "  \00a0\00a0\00a0\00a0\00a0 \00a0\00a0\00a0\00a0\00a0 \00a0\00a0\00a0\00a0\00a0 \00a0\00a0\00a0\00a0\00a0 ";
@@ -177,3 +118,33 @@ body {
 .panel .content-block, .panel .content-block-title {
     color: #fff;
 }
+
+.swiper-custom {
+  position:relative;
+  height:100%;
+}
+.swiper-container {
+  height:100%;
+}
+.swiper-slide {
+  background: #fff;
+}
+.swiper-slide span {
+  text-align:center;
+  display:block;
+  margin: 20px;
+  font-size:21px;
+}
+.swiper-pagination-bullet {
+  width: 10px;
+  height: 10px;
+  background: none;
+  border:1px solid #aaa;
+  border-radius: 0 0 0 0;
+  opacity:1;
+  cursor: pointer;
+}
+.swiper-pagination-bullet-active {
+  background: #007aff;
+  border-color: #007aff;
+}   

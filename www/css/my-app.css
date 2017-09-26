@@ -148,3 +148,7 @@ body {
   background: #007aff;
   border-color: #007aff;
 }   
+
+.chip{
+  margin-right: 5px;
+}
