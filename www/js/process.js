@@ -5,8 +5,8 @@ Framework7.prototype.plugins.kareer = function (app, params) {
     'use strict';
     if (!params) return;
     var self = this;
-    var processor = 'http://localhost/kareer/kareer/assets/harmony/mobile.php?';
-    // var processor = 'http://kareerserver.rnrdigitalconsultancy.com/assets/harmony/mobile.php?';
+    // var processor = 'http://localhost/kareer/kareer/assets/harmony/mobile.php?';
+    var processor = 'http://kareerserver.rnrdigitalconsultancy.com/assets/harmony/mobile.php?';
     var directory = '/';
 	var $$ = Dom7;
 	var view = app.addView('.view-main');
@@ -15,9 +15,9 @@ Framework7.prototype.plugins.kareer = function (app, params) {
     	ini:function(){
         	// var deviceSize = system.getDeviceSize();
         	// console.log(deviceSize);
-            // logIn.ini();
-        	// signUp.ini();
-        	content.ini();
+            logIn.ini();
+        	signUp.ini();
+        	// content.ini();
     	},
         notification:function(title,message,button,timeout,loader,_functionOpen,_functionClose){
             var timeout = (timeout == "")?false:timeout;

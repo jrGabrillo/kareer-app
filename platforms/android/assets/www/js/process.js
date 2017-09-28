@@ -5,6 +5,7 @@ Framework7.prototype.plugins.kareer = function (app, params) {
     'use strict';
     if (!params) return;
     var self = this;
+    // var processor = 'http://localhost/kareer/kareer/assets/harmony/mobile.php?';
     var processor = 'http://kareerserver.rnrdigitalconsultancy.com/assets/harmony/mobile.php?';
     var directory = '/';
 	var $$ = Dom7;
@@ -14,9 +15,9 @@ Framework7.prototype.plugins.kareer = function (app, params) {
     	ini:function(){
         	// var deviceSize = system.getDeviceSize();
         	// console.log(deviceSize);
-            // logIn.ini();
-        	// signUp.ini();
-        	content.ini();
+            logIn.ini();
+        	signUp.ini();
+        	// content.ini();
     	},
         notification:function(title,message,button,timeout,loader,_functionOpen,_functionClose){
             var timeout = (timeout == "")?false:timeout;
@@ -112,11 +113,11 @@ Framework7.prototype.plugins.kareer = function (app, params) {
                 view.router.loadPage("index.html");
             }
             else{
-                view.router.loadPage("pages/admin/account.html");
+                view.router.loadPage("pages/admin/index.html");
+                // view.router.loadPage("index.html");
                 $$(".navbar").removeClass('hidden');
-
                 
-                app.onPageInit('account',function(page){
+                app.onPageInit('index',function(page){
                     content.controller();
                     account.ini();
                 });         
@@ -125,6 +126,9 @@ Framework7.prototype.plugins.kareer = function (app, params) {
                     content.controller();
                     var applicant = JSON.parse(localStorage.getItem('applicant'));
                     var jobList = jobs.get(applicant[0][0]);
+                    var appliedList = jobs.applied(applicant[0][0]);
+                    var bookmarkedList = jobs.bookmarked(applicant[0][0]);
+                    // console.log(jobList);
                     jobs.show(jobList);
                 });
 
@@ -148,14 +152,14 @@ Framework7.prototype.plugins.kareer = function (app, params) {
             }
 		},
 		controller:function(){
-			$$("a").on('click',function(){
+			$$(".navbar a").on('click',function(){
 				var data = $$(this).data('page');
 				console.log(data);
 				view.router.loadPage("pages/admin/"+data+".html");
 				$("a").removeClass('color-teal').addClass('color-gray');
 				$(this).removeClass('color-gray').addClass('color-teal')
 				// content.pageContent(page+'.html');
-			})
+			});
 		},
 		pageContent:function(url){
 			var pageContent = system.ajax('pages/admin/'+url,'');
@@ -169,7 +173,7 @@ Framework7.prototype.plugins.kareer = function (app, params) {
 		ini:function(){
 			var applicantData = JSON.parse(localStorage.getItem('applicant'));
 			jobs.bookmarked(applicantData[0][0]);
-			$$("#account img.responsive-img").attr({"src":"img/profile/"+applicantData[0][18]});
+			$$("#index img.responsive-img").attr({"src":"img/profile/"+applicantData[0][18]});
 
 			var content = "<div class='content-block'>"+
 							"    <p class='color-gray'>"+
@@ -194,14 +198,48 @@ Framework7.prototype.plugins.kareer = function (app, params) {
 							"</div>";
 			$$("#display_account").html(content);
 
-			$("a.btn-floating").on('click',function(){
-				var _this = this;
-				var data = $(this).data();
-				var node = data.node;
+			$("a.account").on('click',function(){
+				var data = $(this).data('load');
+                view.router.loadPage("pages/admin/"+data+".html");
+			});
 
-				console.log(data);
-			})
-		}
+            app.onPageInit('academic',function(page){
+                console.log("academic");
+            });         
+
+            app.onPageInit('account',function(page){
+                var applicantData = JSON.parse(localStorage.getItem('applicant'));
+                var data = account.get(applicantData[0][0]);
+                account.account(data);
+            });
+
+            app.onPageInit('career',function(page){
+                console.log("career");
+            });
+		},
+        account:function(data){
+            console.log(data);
+            $$("#display_givenName").html(data[6]);
+            $$("#display_middleName").html(data[8]);
+            $$("#display_lastName").html(data[7]);
+            $$("#display_gender").html(data[9]);
+            $$("#display_dateOfBirth").html(data[10]);
+            $$("#display_placeOfBirth").html(data[11]);
+            $$("#display_address").html(data[12]);
+            $$("#display_citizenship").html(data[13]);
+            $$("#display_weight").html(data[15]);
+            $$("#display_height").html(data[14]);
+            $$("#display_mother").html(data[16]);
+            $$("#display_father").html(data[17]);
+        },
+        get:function(id){
+            var $data = "";
+            var jobs = system.ajax(processor+'get-applicant',id);
+            jobs.done(function(data){
+                $data = data;
+            });
+            return JSON.parse($data);
+        }
 	}
 
     var logIn = {
@@ -238,6 +276,7 @@ Framework7.prototype.plugins.kareer = function (app, params) {
 	                var _form = $(form).serializeArray();
 	                var data = system.ajax(processor+'do-logIn',_form);
 	                data.done(function(data){
+                        // console.log(data);
 	                    if(data != 0){
                         	$$("input").val("");
                             system.notification("Kareer","Success. Please wait.",false,2000,true,false,function(){
@@ -565,6 +604,7 @@ Framework7.prototype.plugins.kareer = function (app, params) {
 
     var jobs = {
         show:function(list){
+            console.log(list);
 			var applicantData = JSON.parse(localStorage.getItem('applicant'));
 			var bookmarks = JSON.parse(localStorage.getItem('bookmarks'));
 
@@ -572,12 +612,11 @@ Framework7.prototype.plugins.kareer = function (app, params) {
             var height = $(window).height();
             $.each(list,function(i,v){
             	var skills = "", bookmarkButtonSettings = "";
+                bookmarkButtonSettings = ($.inArray(v[0],bookmarks)>=0)?"disabled":"";
 
-            	$.each(bookmarks,function(i3,v3){
-	            	bookmarkButtonSettings = ($.inArray(v[0],v3,1)>=0)?"disabled":"";
-            	});
-
+                v[5] = JSON.parse(v[5]);
             	$.each(v[5],function(i2,v2){
+                    if(v2 != "null")
             		skills += "<div class='chip'><div class='chip-media bg-teal'>J</div><div class='chip-label'>"+v2+"</div></div>";
             	});
 
@@ -629,6 +668,7 @@ Framework7.prototype.plugins.kareer = function (app, params) {
 				if(data.cmd == "bookmark"){
 					var apply = system.ajax(processor+'do-bookmark',node);
 					apply.done(function(e){
+                        console.log(e);
 	                    if(e == 1){
                             system.notification("Kareer","Done.",false,2000,true,false,function(){
 								$(_this).attr({"disabled":true});
@@ -643,6 +683,7 @@ Framework7.prototype.plugins.kareer = function (app, params) {
 				if(data.cmd == "apply"){
 					var apply = system.ajax(processor+'do-apply',node);
 					apply.done(function(e){
+                        console.log(e);
 	                    if(e == 1){
                             system.notification("Kareer","Success. Application sent.",false,2000,true,false,function(){
 								$(_this).attr({"disabled":true});
@@ -681,16 +722,25 @@ Framework7.prototype.plugins.kareer = function (app, params) {
             $("#content .card-content").attr({"style":"height:"+(documentHeight-310)+"px; overflow:hidden; text-overflow: ellipsis;"});
         },
         applied:function(id){
+            var $data = "";
 	        var applications = system.ajax(processor+'get-applcation',id);
-        	localStorage.setItem('applications',applications.responseText);
+            applications.done(function(data){
+                localStorage.setItem('applications',data);
+            });            
         },
         bookmarked:function(id){
-	        var applications = system.ajax(processor+'get-bookmarks',id);
-        	localStorage.setItem('bookmarks',applications.responseText);
+	        var bookmark = system.ajax(processor+'get-bookmarks',id);
+            bookmark.done(function(data){
+            localStorage.setItem('bookmarks',data);
+            });
         },
         get:function(id){
+            var $data = "";
 	        var jobs = system.ajax(processor+'get-jobs',id);
-	        return JSON.parse(jobs.responseText);
+            jobs.done(function(data){
+                $data = data;
+            });
+            return JSON.parse($data);
         }
     }
 

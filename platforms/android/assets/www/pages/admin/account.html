@@ -1,36 +1,84 @@
-<div class="pages navbar-through">
-    <div class="page" id="main-functions" data-page='account'>
-        <div class="navbar white" style="border-bottom: 1px solid #ccc;">
-            <div class="navbar-inner">
-                <div class="left">
-                    <a href="pages/admin/index.html" class="button color-teal"><i class="icon f7-icons">person</i></a>
-                </div>
-                <div class="center" style="margin:0 auto;">
-                    <a href="pages/admin/jobs.html" class="button color-gray"><i class="icon f7-icons">briefcase_fill</i></a>
-                </div>
-                <div class="right" style="margin-left:unset;">
-                    <a href="pages/admin/search.html" class="button color-gray"><i class="icon f7-icons">search_strong</i></a>
-                </div>        
+<div class="page" data-page='account'>
+    <div class="page-content tabs" style="overflow:hidden;white-space: normal;">
+        <div class="card card-header-pic">
+            <div class="card-header">
+                <a href="#" class="btn btn-floating btn-flat white waves-effect waves-teal waves-light back color-gray"><i class="icon f7-icons">arrow_left</i></a> Account
             </div>
-        </div>
-        <div class="page-content tabs" style="overflow:hidden;white-space: normal;" id="account">
-            <div class="card card-header-pic">
-                <div class="card-header color-white no-border" style="background-image:url(img/bg.jpg)">
-                    <img class="responsive-img" src="img/profile/profile_avatar.jpg">
-                </div>
-                <div class="card-content">
-                    <div class="card-content-inner center">
-                        <div id='display_account'></div>
-                        <div class="content-block">
-                            <p>
-                                <span><strong>Welcome Applicant</strong></span>
-                            </p>
-                            <p>
-                                <span>Start Searching Job! Good luck!</span>
-                            </p>
-                        </div>
-                    </div>
-                </div>
+            <div class='list-block' id="display_accountInfo">
+               <ul>
+                   <li class='item-content'>
+                       <div class='item-inner'>
+                           <div class='item-title'>Given Name: <span id='display_givenName'></span></div>
+                           <div class='item-after'><a class='btn btn-floating btn-flat waves-effect waves-teal waves-light'><i class='icon f7-icons color-gray'>compose</i></a></div>
+                       </div>
+                   </li>
+                   <li class='item-content'>
+                       <div class='item-inner'>
+                           <div class='item-title'>Middle Name: <span id='display_middleName'></span></div>
+                           <div class='item-after'><a class='btn btn-floating btn-flat waves-effect waves-teal waves-light'><i class='icon f7-icons color-gray'>compose</i></a></div>
+                       </div>
+                   </li>
+                   <li class='item-content'>
+                       <div class='item-inner'>
+                           <div class='item-title'>Last Name: <span id='display_lastName'></span></div>
+                           <div class='item-after'><a class='btn btn-floating btn-flat waves-effect waves-teal waves-light'><i class='icon f7-icons color-gray'>compose</i></a></div>
+                       </div>
+                   </li>
+                   <li class='item-content'>
+                       <div class='item-inner'>
+                           <div class='item-title'>Gender: <span id='display_gender'></span></div>
+                           <div class='item-after'><a class='btn btn-floating btn-flat waves-effect waves-teal waves-light'><i class='icon f7-icons color-gray'>compose</i></a></div>
+                       </div>
+                   </li>
+                   <li class='item-content'>
+                       <div class='item-inner'>
+                           <div class='item-title'>Date of Birth: <span id='display_dateOfBirth'></span></div>
+                           <div class='item-after'><a class='btn btn-floating btn-flat waves-effect waves-teal waves-light'><i class='icon f7-icons color-gray'>compose</i></a></div>
+                       </div>
+                   </li>
+                   <li class='item-content'>
+                       <div class='item-inner'>
+                           <div class='item-title'>Place of Birth: <span id='display_placeOfBirth'></span></div>
+                           <div class='item-after'><a class='btn btn-floating btn-flat waves-effect waves-teal waves-light'><i class='icon f7-icons color-gray'>compose</i></a></div>
+                       </div>
+                   </li>
+                   <li class='item-content'>
+                       <div class='item-inner'>
+                           <div class='item-title'>Permanent Address: <span id='display_address'></span></div>
+                           <div class='item-after'><a class='btn btn-floating btn-flat waves-effect waves-teal waves-light'><i class='icon f7-icons color-gray'>compose</i></a></div>
+                       </div>
+                   </li>
+                   <li class='item-content'>
+                       <div class='item-inner'>
+                           <div class='item-title'>Citizenship: <span id='display_citizenship'></span></div>
+                           <div class='item-after'><a class='btn btn-floating btn-flat waves-effect waves-teal waves-light'><i class='icon f7-icons color-gray'>compose</i></a></div>
+                       </div>
+                   </li>
+                   <li class='item-content'>
+                       <div class='item-inner'>
+                           <div class='item-title'>Weight: <span id='display_weight'></span></div>
+                           <div class='item-after'><a class='btn btn-floating btn-flat waves-effect waves-teal waves-light'><i class='icon f7-icons color-gray'>compose</i></a></div>
+                       </div>
+                   </li>
+                   <li class='item-content'>
+                       <div class='item-inner'>
+                           <div class='item-title'>Height: <span id='display_height'></span></div>
+                           <div class='item-after'><a class='btn btn-floating btn-flat waves-effect waves-teal waves-light'><i class='icon f7-icons color-gray'>compose</i></a></div>
+                       </div>
+                   </li>
+                   <li class='item-content'>
+                       <div class='item-inner'>
+                           <div class='item-title'>Mother's Name: <span id='display_mother'></span></div>
+                           <div class='item-after'><a class='btn btn-floating btn-flat waves-effect waves-teal waves-light'><i class='icon f7-icons color-gray'>compose</i></a></div>
+                       </div>
+                   </li>
+                   <li class='item-content'>
+                       <div class='item-inner'>
+                           <div class='item-title'>Father's Name: <span id='display_father'></span></div>
+                           <div class='item-after'><a class='btn btn-floating btn-flat waves-effect waves-teal waves-light'><i class='icon f7-icons color-gray'>compose</i></a></div>
+                       </div>
+                   </li>
+               </ul>
             </div>
         </div>
     </div>
