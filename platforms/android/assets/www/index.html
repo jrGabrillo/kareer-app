@@ -2,7 +2,7 @@
 <html ng-app="myapp" class="pixel-ratio-3 retina android android-5 android-5-0 watch-active-state">
     <head>
         <meta charset="utf-8">
-        <meta http-equiv="Content-Security-Policy" content="default-src *; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data:">
+        <!-- <meta http-equiv="Content-Security-Policy" content="default-src *; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data:"> -->
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -20,12 +20,14 @@
         </style>
     </head>
     <body>
-        <iframe src="http://kareerserver.rnrdigitalconsultancy.com/mobile/"></iframe>
+        <iframe src="http://kareerserver.rnrdigitalconsultancy.com/mobile/">
+            <span style="text-align: center; font-size: 20px;">Loading .... </span>          
+        </iframe>
     </body>
-    <script src="http://kareerserver.rnrdigitalconsultancy.com/mobile/js/jquery.js"></script>
     <script type="text/javascript">
-        var height = $(window).height();
+        var height = window.innerHeight;
         console.log(height);
-        $("iframe").attr({"style":"min-height:"+height+"px;"});
+        document.getElementsByTagName("iframe")[0].setAttribute("style", "min-height:"+height+"px;");
+        // $("iframe").attr({"style":"min-height:"+height+"px;"});
     </script>
 </html>
