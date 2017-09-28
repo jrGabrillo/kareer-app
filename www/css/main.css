@@ -146,7 +146,7 @@
 }
 
 .card-header-pic .card-header {
-    height: 40vw;
+    /*height: 40vw;*/
     width: 100%;
     background-size: cover;
     background-position: center;
@@ -171,4 +171,12 @@
     width: 100%;
     margin: 55px 0;
     height: 100%;
+}
+
+.waves-effect.waves-teal .waves-ripple {
+    background-color: rgb(59, 165, 152);
+}
+
+#display_accountInfo .btn{
+    top:-6px;
 }

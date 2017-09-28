@@ -159,7 +159,7 @@ Framework7.prototype.plugins.kareer = function (app, params) {
 				$("a").removeClass('color-teal').addClass('color-gray');
 				$(this).removeClass('color-gray').addClass('color-teal')
 				// content.pageContent(page+'.html');
-			})
+			});
 		},
 		pageContent:function(url){
 			var pageContent = system.ajax('pages/admin/'+url,'');
@@ -199,14 +199,47 @@ Framework7.prototype.plugins.kareer = function (app, params) {
 			$$("#display_account").html(content);
 
 			$("a.account").on('click',function(){
-				var _this = this;
-				var data = $(this).data();
-				var node = data.node;
-				console.log(data);
-                view.router.loadPage("pages/admin/"+data.load+".html");
-                // app.popup(data);
-			})
-		}
+				var data = $(this).data('load');
+                view.router.loadPage("pages/admin/"+data+".html");
+			});
+
+            app.onPageInit('academic',function(page){
+                console.log("academic");
+            });         
+
+            app.onPageInit('account',function(page){
+                var applicantData = JSON.parse(localStorage.getItem('applicant'));
+                var data = account.get(applicantData[0][0]);
+                account.account(data);
+            });
+
+            app.onPageInit('career',function(page){
+                console.log("career");
+            });
+		},
+        account:function(data){
+            console.log(data);
+            $$("#display_givenName").html(data[6]);
+            $$("#display_middleName").html(data[8]);
+            $$("#display_lastName").html(data[7]);
+            $$("#display_gender").html(data[9]);
+            $$("#display_dateOfBirth").html(data[10]);
+            $$("#display_placeOfBirth").html(data[11]);
+            $$("#display_address").html(data[12]);
+            $$("#display_citizenship").html(data[13]);
+            $$("#display_weight").html(data[15]);
+            $$("#display_height").html(data[14]);
+            $$("#display_mother").html(data[16]);
+            $$("#display_father").html(data[17]);
+        },
+        get:function(id){
+            var $data = "";
+            var jobs = system.ajax(processor+'get-applicant',id);
+            jobs.done(function(data){
+                $data = data;
+            });
+            return JSON.parse($data);
+        }
 	}
 
     var logIn = {
