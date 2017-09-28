@@ -37,6 +37,6 @@ myapp.pages.IndexPageController = function(myapp, $$) {
         setTimeout(function(){
             $$(".page").removeClass('hidden');
             welcomescreen.close();
-        },1000); //3000
+        },3000); //3000
     }());
 };
