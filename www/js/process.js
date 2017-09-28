@@ -5,8 +5,8 @@ Framework7.prototype.plugins.kareer = function (app, params) {
     'use strict';
     if (!params) return;
     var self = this;
-    // var processor = 'http://localhost/kareer/kareer/assets/harmony/mobile.php?';
-    var processor = 'http://kareerserver.rnrdigitalconsultancy.com/assets/harmony/mobile.php?';
+    var processor = 'http://localhost/kareer/kareer/assets/harmony/mobile.php?';
+    // var processor = 'http://kareerserver.rnrdigitalconsultancy.com/assets/harmony/mobile.php?';
     var directory = '/';
 	var $$ = Dom7;
 	var view = app.addView('.view-main');
@@ -64,6 +64,15 @@ Framework7.prototype.plugins.kareer = function (app, params) {
                 error: function() {
                     console.log("Error occured")
                 }
+            });
+        },
+        xml:function(url){
+            return $.ajax({
+                type: "POST",
+                url: url,
+                dataType: 'xml',
+                async: !1,
+                cache:false
             });
         },
 		popover:function(title,message){
@@ -214,7 +223,7 @@ Framework7.prototype.plugins.kareer = function (app, params) {
             });
 
             app.onPageInit('career',function(page){
-                console.log("career");
+                career.ini();
             });
 		},
         account:function(data){
@@ -244,8 +253,53 @@ Framework7.prototype.plugins.kareer = function (app, params) {
 
     var career = {
         ini:function(){
-            console.log("hello");
+            var applicantData = JSON.parse(localStorage.getItem('applicant'));
+            career.ini(applicantData[0][0]);
         },
+        add:function(id){
+            $$("a[data-cmd='add-career']").on('click',function(){
+                var data = system.xml("pages/admin/pages.xml");
+                $(data.responseText).find("div.popup.career").each(function(i,content){
+                    app.popup(content);
+
+                    $("#form_career").validate({
+                        rules: {
+                            field_dateFirst: {required: true,maxlength:20},
+                            field_dateLast: {required: true,maxlength:20},
+                            field_position: {required: true,maxlength:100},
+                            field_agency: {required: true,maxlength:100},
+                            field_salary: {required: true,maxlength:100},
+                            field_appointment: {required: true,maxlength:100},
+                        },
+                        errorElement : 'div',
+                        errorPlacement: function(error, element) {
+                            var placement = $(element).data('error');
+                            if(placement){
+                                $(placement).append(error)
+                            } 
+                            else{
+                                error.insertAfter(element);
+                            }
+                        },
+                        submitHandler: function (form) {
+                            var _form = $(form).serializeArray();
+                            var data = system.ajax(processor+'do-career',[id,_form]);
+                            data.done(function(data){
+                                if(data != 0){
+                                    $$("input").val("");
+                                    system.notification("Kareer","Career Added.",false,2000,true,false,function(){
+                                        app.closeModal('.career', true);
+                                    });
+                                }
+                                else{
+                                    system.notification("Kareer","Failed.",false,3000,true,false,false);
+                                }
+                            })
+                        }
+                    }); 
+                });
+            });
+        }
     }
 
     var academic = {
